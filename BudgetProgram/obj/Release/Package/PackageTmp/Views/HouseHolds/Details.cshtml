@@ -1,0 +1,208 @@
+﻿@model BudgetProgram.Models.HouseHolds
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Details";
+    var currentUserId = User.Identity.GetUserId();
+    var currentUser = Model.Users.FirstOrDefault(u => u.Id == currentUserId);
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Users in this household</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <table id="tableUsers" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            @*<th>Personal Budgets</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                        <tr>
+                            <td>@user.FirstName @user.LastName </td>
+                            <td>@user.Email</td>
+                            @*<td class="description">
+                                    @if (Model.BudgetItems != null)
+                                    {
+                                        foreach (var budget in Model.BudgetItems.Where(b => b.IsSoftDeleted != true))
+                                        {
+                                            <p>@budget.Name, @budget.Balance of @budget.AmountLimit </p><br />;
+                                        }
+                                    }
+                                </td>*@
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Invited Users</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <div class="clearfix"></div>
+                <div id="inviteUserPartial"></div>
+                <table id="tableIUsers" class="table">
+                    <thead>
+                        <tr>
+                            <th>Invitee</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.Hidden("iUser-to-delete", "", new { @id = "iUser-to-delete" })
+                        @foreach (var iUser in Model.Invites)
+                        {
+                        <tr>
+                            <td>@iUser.InvitedUser</td>
+                            <td>@iUser.Email</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <button class="invite btn btn-teal btn-float pull-right">@Html.ActionLink("Invite New User","Invite","HouseHolds")</button>
+            </div>
+        </div>
+    </div>
+@*</div>*@
+
+
+@*<div class="row">*@
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Categories</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                @using (Html.BeginForm("Create", "Categories"))
+            {
+                    @Html.AntiForgeryToken()
+                    <input type="text" class="text-box form-control single-line" id="Name" name="Name" placeholder="Enter new category name" />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                    <br />
+                    <button type="submit" class="btn btn-teal pull-right btn-pad">Create New</button>
+                    <div class="clearfix"></div>
+                    }
+                <div id="editView"></div>
+                <hr />
+                <ul class="list-unstyled categories-list">
+                    @foreach (var category in Model.Category)
+                        {
+                        <li>
+                            <strong>@category.Name</strong>
+                            <div id="category-buttons" class="text-right">
+                                @if (category.Name != "Miscellaneous")
+                                    {<button type="button" class="editCat btn btn-teal btn-xs" data-id="@category.Id"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="deleteCat btn btn-danger btn-xs" data-id="@category.Id"><i class="fa fa-trash-o"></i></button>}
+                            </div>
+                        </li>
+
+                        }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Leave this household</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <p>If you leave this household you will no longer see any account information for this household and you will need to either create a new household or join an existing household with invitation and code.</p>
+                @using (Html.BeginForm("LeaveHousehold", "HouseHolds"))
+                    {
+                    @Html.AntiForgeryToken()
+                    <div>
+                        <input id="leaveId" type="hidden" name="id" value="" />
+                        <button type="submit" class="btn btn-danger">Leave Household</button>
+                    </div>
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="viewCat">
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        //$('.editAcct').click(function(){
+        //    $('#editView').load('/Accounts/_Edit/'+$(this).data('id'));
+        //});
+        $('.editCat').click(function () {
+            $('.viewCat').load('/Categories/_Edit/' + $(this).data('id'));
+        });
+        $('.deleteCat').click(function () {
+            $('.viewCat').load('/Categories/_Delete/' + $(this).data('id'));
+        });
+    </script>
+}
+
+
+

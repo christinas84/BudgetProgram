@@ -1,0 +1,80 @@
+﻿@model BudgetProgram.Models.Categories
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Edit</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+
+                @using (Html.BeginForm("Edit","Categories", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @*<div class="form-horizontal">*@
+                        <h4>Categories</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.HouseHoldId)
+                        @*<div class="form-group">
+                            @Html.LabelFor(model => model.HouseHoldId, "HouseHoldId", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("HouseHoldId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HouseHoldId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                <div class="form-group">
+                            <div class="col-md-offset-1 col-md-1">
+                                <input type="submit" value="Save" class="btn btn-default" />
+                            </div>
+                        </div>
+                    @*</div>*@
+                }
+                <form>
+                    <div class="col-md-offset-2 col-md-1">
+                        <button class="btn cancelView btn-default">Cancel</button>
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $('.cancelView').click(function () {
+            $('.editCat').hide()
+            //$('.createview').load('/BudgetItems/_Create/' + $(this).data('id'));
+        });
+    </script>
+}

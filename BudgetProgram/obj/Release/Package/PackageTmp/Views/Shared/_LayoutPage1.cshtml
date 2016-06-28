@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Fruitful</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="~/img/favicon-dollar.ico">
+    <!-- END META SECTION -->
+    <!-- CSS INCLUDE -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    @*<link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@   
+
+    <link href="~/Content/sweetalert.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" id="theme" href="~/css/theme-default.css" />
+    <link href="~/Content/animate.min.css" rel="stylesheet" />
+    <link href="~/Content/blueimp-gallery.min.css" rel="stylesheet" />
+   
+    
+    <!-- EOF CSS INCLUDE --> 
+</head>
+<body class="page-container">
+    <!-- START PAGE CONTAINER -->
+    <div class="page-container">
+
+        <!-- START PAGE SIDEBAR -->
+        <div class="page-sidebar">
+            <!-- START X-NAVIGATION -->
+            <ul class="x-navigation">
+                <li class="xn-logo">
+                    <a href=@Url.Action("Index", "Home")>Fruitful</a>
+                    <a href="#" class="x-navigation-control"></a>
+                </li>
+                <li class="xn-title">Navigation</li>
+                <li>
+                    <a href=@Url.Action("Home", "Households")><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+                </li>
+                <li>
+                    <a href=@Url.Action("Create", "Transactions")><span class="fa fa-plus-square"></span> <span class="xn-text">Add Transactions</span></a>
+                </li>
+                <li>
+                    <a href=@Url.Action("Index", "Accounts")><span class="fa fa-dollar"></span> <span class="xn-text">Account History</span></a>
+                </li>
+                <li>
+                    @*<span class="fa fa-desktop"> @Html.ActionLink("New Budget", "Create", "Budgets")</span>*@
+                    @*<a href="index.html"> <span class="xn-text">New Budget</span></a>*@
+                    <a href=@Url.Action("Index", "BudgetItems")><span class="fa fa-paperclip"></span> <span class="xn-text">New Budget</span></a>
+                </li>
+                <li class="xn-openable">
+                    <a href="#"><span class="fa fa-file"></span> <span class="xn-text">Manage</span></a>
+                    <ul>
+                        <li><a href=@Url.Action("Details", "HouseHolds")><span class="fa fa-home"></span> Household</a></li>
+                        <li><a href=@Url.Action("Index", "Manage")><span class="fa fa-user"></span> Profile</a></li>
+                        <li><a href=@Url.Action("Index", "Transactions")><span class="fa fa-user"></span> Transactions</a></li>
+                        @*<li><a href=@Url.Action("Index", "Categories")><span class="fa fa-industry"></span> Categories</a></li>*@
+                        @*<li><a href=@Url.Action("Index", "BudgetItems")><span class="fa fa-dollar"></span> Budgets</a></li>*@
+                    </ul>
+                </li>
+            </ul>
+            <!-- END X-NAVIGATION -->
+        </div>
+        <!-- END PAGE SIDEBAR -->
+        <!-- PAGE CONTENT -->
+        <div class="page-content">
+
+            <!-- START X-NAVIGATION VERTICAL -->
+            <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                <!-- TOGGLE NAVIGATION -->
+                <li class="xn-icon-button">
+                    <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                </li>
+                <div style="padding-right:50px">@Html.Partial("_LoginPartial")</div>
+                <!-- END TOGGLE NAVIGATION -->
+            </ul>
+            
+            <!-- END X-NAVIGATION VERTICAL -->          
+
+            <!-- PAGE CONTENT WRAPPER -->
+            <div class="page-content-wrap">                
+                @RenderBody()
+            </div>
+            <!-- END PAGE CONTENT WRAPPER -->
+        </div>
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+    <!-- START SCRIPTS -->
+    <!-- START PLUGINS -->
+    <script src="//code.jquery.com/jquery-1.12.3.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    @*<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>*@
+
+    <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/sweetalert.min.js"></script>
+    <script src="~/Scripts/sweetalert-dev.js"></script>
+    @*<script src="~/Scripts/jquery.min.js"></script>*@
+    <!-- THIS PAGE PLUGINS -->
+    <script src="~/Scripts/jquery.mCustomScrollbar.min.js"></script>
+    <!-- END PAGE PLUGINS -->
+    <!-- START TEMPLATE -->
+    <script src="~/Scripts/plugins.js"></script>
+    <script src="~/Scripts/actions.js"></script>
+    <!-- END TEMPLATE -->
+    <!-- END SCRIPTS -->
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+﻿@model BudgetProgram.Models.BudgetItems
+
+@*@{
+        ViewBag.Title = "Delete";
+        Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    }*@
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Delete budget</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <h3 style="color: darkred">Are you sure you want to delete this?</h3>
+                <div>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            Category
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Category.Name)
+                        </dd>
+
+                        <dt>
+                            Created by 
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Creator.FirstName)
+                        </dd>
+
+                        <dt>
+                            HouseHold 
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.HouseHold.Name)
+                        </dd>
+
+                        <dt>
+                            Warn Within
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Warning.WarningLimit)
+                        </dd>
+
+                        <dt>
+                            Budget Name
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            Amount Limit
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.AmountLimit)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Balance)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Balance)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Income)
+                        </dt>
+
+                        @if (Model.Income == true)
+                        {
+                            <dd>@*<i class="fa fa-plus"></i>*@Income</dd>}
+                        else {
+                            <dd>@*<i class="fa fa-minus"></i>*@Expense</dd>}
+
+                    </dl>
+
+                    @using (Html.BeginForm("Delete", "BudgetItems", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="form-actions no-color col-md-offset-1 col-md-1">
+                            <input type="submit" value="Delete" class="btn btn-danger" />                            
+                        </div>
+                    }
+                </div>
+                <form>
+                    <div class="col-md-offset-2 col-md-1">
+                        <button class="btn cancel btn-default">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+      @section Scripts {
+    <script type="text/javascript">
+    
+        $('.cancel').click(function () {
+            $('.deleteView').hide()
+        $('.createview').load('/BudgetItems/_Create/');
+    });
+       
+    </script>
+    }         

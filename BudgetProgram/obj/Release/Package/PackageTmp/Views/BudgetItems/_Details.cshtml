@@ -1,0 +1,120 @@
+﻿@model BudgetProgram.Models.BudgetItems
+
+@*@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}*@
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Details</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    @Html.HiddenFor(model => model.Id)
+                    <dt>
+                        Category
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Category.Name)
+                    </dd>
+
+                    @*<dt>
+                        Created by
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Creator.FirstName)
+                    </dd>*@
+
+                    <dt>
+                        HouseHold
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.HouseHold.Name)
+                    </dd>
+
+                    <dt>
+                        Warn Within
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Warning.WarningLimit)
+                    </dd>
+
+                    <dt>
+                       Budget Name
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+                    <dt>
+                      Amount Limit
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AmountLimit)
+                    </dd>
+                    @{ 
+                        var budBal = Model.Category.Transactions.Where(t => t.Income != true).Sum(t => t.Amount);
+
+                    }
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Balance)
+                    </dt>
+
+                    <dd>
+                        @budBal
+                    </dd>
+
+                    <dt>
+                        Type
+                    </dt>
+                    @if (Model.Income == true)
+                    {
+                        <dd>@*<i class="fa fa-plus"></i>*@Income</dd>}
+                    else {
+                        <dd>@*<i class="fa fa-minus"></i>*@Expense</dd>}
+                    @*<dd>
+                        @Html.DisplayFor(model => model.Income)
+                    </dd>*@
+
+                </dl>
+                <form>
+                    <button class="btn cancelview btn-default">Cancel</button>
+                </form>
+            </div>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+   
+@section Scripts {
+    <script type="text/javascript">
+        $('.cancelview').click(function () {
+            $('.detailsView').hide()
+        $('.createview').load('/BudgetItems/_Create/' + $(this).data('id'));
+    });
+    </script>
+}     

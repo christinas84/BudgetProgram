@@ -1,0 +1,61 @@
+﻿@model BudgetProgram.Models.HouseHolds
+
+@{
+    ViewBag.Title = "Delete";
+}
+<div class="content" style="margin: 20px;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" style="background-color:rgba(0,0,0,0.35)">
+                    <div class="header">
+                        <h2>Delete</h2>
+                    </div>
+                    <div class="content">
+                        <h3>Are you sure you want to delete @Model.Name?</h3><br />
+                        <p>If you delete this household you will no longer see any account information for this household and you will need to either create a new household or join an existing household with invitation and code.</p>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Delete household" class="btn btn-default"/> <br />
+                                <br />
+                                @Html.ActionLink("Cancel", "Home", "Households", new { @class = "btn btn-default"})
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @*<dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+    </dl>*@
+
+   

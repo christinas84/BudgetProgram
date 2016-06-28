@@ -1,0 +1,263 @@
+﻿@model IEnumerable<BudgetProgram.Models.Transactions>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="edit"></div>
+<div class="delete">
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>All Reconciled Transactions</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+               
+            <table class="table myTable table-responsive"style="width: 100%;" cellspacing="0" id="myTable" >
+                    <thead>
+                        <tr>
+                            <th>
+                               Account Name 
+                            </th>
+                            <th>
+                              Category 
+                            </th>
+                            <th>Budget</th>
+                            <th>
+                                Reconciled
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            @*<th>
+                               Reconciled Amount
+                            </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.Amount)
+                            </th>
+                            <th>
+                                Date Transacted
+                            </th>
+                            @*<th>
+                                @Html.DisplayNameFor(model => model.EnteredById)
+                            </th>*@
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        @foreach (var item in Model)
+{
+                            if(item.Reconciled == true) { 
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Account.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category.Name)
+                                </td>
+                                @if (item.BudgetItem != null)
+                {
+                                    <td>@item.BudgetItem.Name</td>}
+                else {
+                                    <td></td>}
+                                <td>
+                                    @if (item.Reconciled == true)
+                                    { <i class="fa fa-check"></i>  }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                @*<td>
+                                    @Html.DisplayFor(modelItem => item.ReconAmount)
+                                </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @{ 
+                                        string tranDate = item.Transacted.Date.ToShortDateString();
+                                    }
+                                    @Html.DisplayFor(modelItem => tranDate)
+                                </td>
+                                @*<td>
+                                    @Html.DisplayFor(modelItem => item.EnteredById)
+                                </td>*@
+                                <td>
+                                    @if (item.Income == true)
+                                    { <i class="fa fa-plus"></i> }
+                                    else { <i class="fa fa-minus"></i>}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-teal" onclick="location.href='@Url.Action("Details", "Transactions", new { id = item.Id })'"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-teal" onclick="location.href='@Url.Action("Edit", "Transactions", new { id = item.Id })'"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("Delete", "Transactions", new { id = item.Id })'"><i class="fa fa-trash"></i></button>                                   
+                                    </td>
+</tr>
+                        }}
+                    </tbody>
+                </table>
+                <p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>All Unreconciled Transactions</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+
+                <table class="table myTable table-responsive" style="width: 100%;" cellspacing="0" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Account Name
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>Budget</th>
+                            <th>
+                                Reconciled
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            @*<th>
+                                   Reconciled Amount
+                                </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.Amount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Transacted)
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.EnteredById)
+                                </th>*@
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            if (item.Reconciled != true)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Account.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Category.Name)
+                                    </td>
+                                    @if (item.BudgetItem != null)
+                                    {
+                                        <td>@item.BudgetItem.Name</td>}
+                                    else {
+                                        <td></td>}
+                                    <td>
+                                        @if (item.Reconciled == true)
+                                        { <i class="fa fa-check"></i>  }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.ReconAmount)
+                                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Transacted.Date.ToShortDateString())
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.EnteredById)
+                                        </td>*@
+                                    <td>
+                                        @if (item.Income == true)
+                                        { <i class="fa fa-plus"></i> }
+                                        else { <i class="fa fa-minus"></i>}
+                                    </td>
+                                    <td>
+                                        @*@Html.ActionLink("About", "About", "Home", new { @class = "btn btn-success" })
+                                        @Url.Action("Details", "Details", new { id = item.Id, @class = "btn btn-sm btn-teal", @type = "button" }) |
+                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                                       
+                                        <button class="btn btn-sm btn-teal" onclick="location.href='@Url.Action("Details", "Transactions", new { id = item.Id })'"><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-teal" onclick="location.href='@Url.Action("Edit", "Transactions", new { id = item.Id })'"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("Delete", "Transactions", new { id = item.Id })'"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                                        }
+                    </tbody>
+                </table>
+                <p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="createView editView deleteView">@Html.Action("_Create", "BudgetItems")</div>*@
+
+@{
+    var message = TempData["AlertMessage"] ?? string.Empty;
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+        $('.editTrans').click(function () {
+            $('.editView').load('/Transactions/_Edit/' + $(this).data('id'));
+        });
+        $('.deleteTrans').click(function () {
+            $('.deleteView').load('/Transactions/_Delete/' + $(this).data('id'));
+        });    
+        var message = '@message';
+        if (message)
+            //alert(message);
+        sweetAlert("Oops...", message, "error");
+    </script>
+}

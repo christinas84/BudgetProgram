@@ -1,0 +1,188 @@
+﻿@model BudgetProgram.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+<p class="text-success">@ViewBag.StatusMessage</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Your profile information</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+                <div class="panel-body">
+                    <dl>
+                        <dt>First Name</dt>
+                        <dd>@Model.User.FirstName</dd>
+                        <dt>Last Name</dt>
+                        <dd>@Model.User.LastName</dd>
+                        <dt>Email</dt>
+                        <dd>@Model.User.Email</dd>
+                    </dl>
+                    @*<table>
+                        <tr>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>Email</td>
+                        </tr>
+                        <tr>
+                            <td>@Model.User.FirstName</td>
+                            <td>@Model.User.LastName</td>
+                            <td>@Model.User.Email</td>
+                        </tr>
+                    </table>*@
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>User Name</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                        @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <h4>Change your name</h4>
+                        @Html.Action("_ChangeUserName", "Account")
+                        <hr />
+                    </div>
+                    </div>
+                </div>
+            </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title-box">
+                                    <h3>Password</h3>
+                                </div>
+                                <ul class="panel-controls" style="margin-top: 2px;">
+                                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="panel-body">
+                                <h4>Change your password</h4>
+                                <hr />
+                                <div class="text-center">
+    @if (Model.HasPassword)
+            {
+        <button class="btn btn-lg btn-default">@Html.ActionLink("Change your password", "ChangePassword")</button>
+    }
+    else
+    {
+        <button class="btn btn-lg btn-default">@Html.ActionLink("Create", "SetPassword")</button>
+    }
+    <br />
+    <br />
+    @*</dd>
+        <dt>External Logins:</dt>
+        <dd>*@
+    @*<button class="btn btn-lg btn-default">
+        @Model.Logins.Count
+        @Html.ActionLink("Manage", "ManageLogins")
+    </button>
+</div>
+                                <hr />
+                                <p>Two-Factor Authentication:</p>
+                                <p>
+                                    There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                                    for details on setting up this ASP.NET application to support two-factor authentication.
+                                </p>*@
+                            </div>
+                            @*<h4>Change your account settings</h4>
+                    <hr />*@
+                            @*<dl class="dl-horizontal">
+                    <dt>Password:</dt>
+                    <dd>
+
+                        [*@
+                            
+
+                            @*</dd>*@
+                            @*
+                    Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+                     See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                        for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+                     Uncomment the following block after you have set up two-factor authentication
+                            *@
+                            @*
+                    <dt>Phone Number:</dt>
+                    <dd>
+                        @(Model.PhoneNumber ?? "None") [
+                        @if (Model.PhoneNumber != null)
+                        {
+                            @Html.ActionLink("Change", "AddPhoneNumber")
+                            @: &nbsp;|&nbsp;
+                            @Html.ActionLink("Remove", "RemovePhoneNumber")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Add", "AddPhoneNumber")
+                        }
+                        ]
+                    </dd>
+                            *@
+                          
+                            @*@if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Enabled
+                            <input type="submit" value="Disable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Disabled
+                            <input type="submit" value="Enable" class="btn btn-link" />
+                            </text>
+                        }
+                    }*@
+
+                        </div>
+                    </div>
+                </div>
+        @*</div>
+    </div>*@
+
+
+

@@ -1,0 +1,295 @@
+﻿
+@model BudgetProgram.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Accounts for this household</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <h2>Accouts for the @Model.HouseHolds.Name HouseHold</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th>Available</th>
+                                <th>Reconciled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var account in Model.Accounts)
+                            {
+                                var bal = account.StartBal + account.Transactions.Where(t=>t.Income == true).Sum(s => s.Amount) - account.Transactions.Where(t=>t.Income == false).Sum(s=>s.Amount);
+                                //1700(700 startBal - 850(all transact expense) +      - 1850(all transactions)   == -150 
+                                <tr>
+                                    <td>@account.Name</td>
+                                    <td class="balance">$ @bal</td>
+                                    <td class="balance">$ @ViewBag.recAcct</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Budgets Overview</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                @foreach (var budget in Model.BudgetList)
+            {
+                var budBal = budget.Category.Transactions.Where(t => t.Income != true).Sum(t => t.Amount);
+                    <div class="progress-group">
+                        <p class="progress-title pull-left">@budget.Name</p>
+                        <p class="pull-left"> Current: $@budBal</p>
+                        @if (budget.Income == true)
+                        {<p class="pull-right">Goal: $@budget.AmountLimit</p>}
+                        else {<p class="pull-right">Limit: $@budget.AmountLimit</p>}
+                        <div class="clearfix"></div>
+                        @{ var percentage = (budBal / budget.AmountLimit).ToString("0.00%");
+
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@percentage" aria-valuemin="0" style="width: @percentage" aria-value-max="@budget.AmountLimit" value-min="0" value="@budget.Balance">
+                                    <input type="hidden" id="balance" value="@budget.Balance" />
+                                    <input type="hidden" id="limit" value="@budget.AmountLimit" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                            }
+            </div>
+        </div>
+
+    </div>
+    </div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Overview</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <h2>Expense vs. Income</h2>
+                    @*<div id="dashboard-donut-1" style="height: 250px;" class="chart-holder col-md-12">*@
+                    @*<div class="row">*@
+                        <div id="MyChart" style="height: 250px; width: 306px; left: -84px;" class="col-md-6 col-md-offset-3">
+
+                        </div>
+                        @*<div class="col-md-6"></div>*@
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Recent Transactions</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Transacted</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Entered By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var currentDate = DateTime.Now;}
+
+                        @foreach (var account in Model.Accounts)
+                        {
+                            foreach (var transaction in account.Transactions)
+                            {
+                                if (transaction.Transacted >= DateTime.Now.AddDays(-7))
+                                {
+                                    <tr>
+                                        <td>@transaction.Account.Name</td>
+                                        <td>@transaction.Transacted.Date.ToShortDateString()</td>
+                                        @if (transaction.Income)
+                                        {
+                                            <td><i class="fa fa-plus"></i></td>}
+                                        else {
+                                            <td><i class="fa fa-minus"></i></td>}
+                                        <td>@transaction.Amount</td>
+                                        <td>@transaction.Description</td>
+                                        <td>@transaction.EnteredBy.FirstName</td>
+                                    </tr>
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*<div class="row">
+    
+</div>*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Budgets Chart</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <h2>Overview of Budgets</h2>
+                    @*<div id="dashboard-donut-1" style="height: 250px;" class="chart-holder col-md-12">*@
+                    <div class="row">
+                        <div id="MyBudgetChart" style="height: 250px" class="col-md-6 col-md-offset-3">
+
+                        </div>
+                        @*<div class="col-md-6"></div>*@
+                    </div>
+                </div>
+            </div>
+            @*<div class="panel-body">
+                <div class="col-md-12">
+                    <h2>Expense vs. Income</h2>
+                    @*<div id="dashboard-donut-1" style="height: 250px;" class="chart-holder col-md-12">
+                    <div class="row">
+                        <div id="MyChart" style="height: 250px;" class="col-md-6 col-md-offset-3">
+
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script type="text/javascript">
+                    $(function () {
+
+                        $.post('@Url.Action("GetChart","HouseHolds")').then(function (response) {
+                            new Morris.Donut({
+                                element: 'MyChart',
+                                data: response,
+                                resize: true,
+                                colors: [
+   '#00b3b3',
+   '#000019',
+   '#a26b14',
+   '#95D7BB'
+                                ],
+                            });
+                        });
+
+                    });
+        $(function () {
+
+            $.post('@Url.Action("GetBudgetChart","HouseHolds")').then(function (response) {
+                new Morris.Donut({
+                    element: 'MyBudgetChart',
+                    data: response,
+                    resize: true,
+                    colors: [
+    '#a26b14',
+    '#000019',
+    '#a26b14',
+    '#95D7BB'
+                    ],
+                });
+            });
+
+        });
+    </script>
+}
+
+
+

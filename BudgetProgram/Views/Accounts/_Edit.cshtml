@@ -1,0 +1,77 @@
+﻿@model BudgetProgram.Models.Account
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@*<h2>Edit</h2>*@
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Edit this account</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Edit", "Accounts", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @*<div class="form-horizontal">
+                            <h4>Account</h4>
+                            <hr />*@
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Created)
+                        @Html.HiddenFor(model => model.HouseHoldId)
+                        @Html.HiddenFor(model => model.ReconBalance)
+                        @Html.HiddenFor(model => model.Balance)
+                        @Html.HiddenFor(model => model.StartBal)
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-offset-1 col-md-1">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+                        <form>
+                            <div class="col-md-offset-2 col-md-1">
+                                <button class="btn cancelView btn-default">Cancel</button>
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+        </div>
+    </div>
+    </div>
+   
+
+   @section Scripts {
+    <script type="text/javascript">
+
+        $('.cancelView').click(function () {
+            $('.editView').hide()
+            $('.createview').load('/BudgetItems/_Create/' + $(this).data('id'));
+        });
+
+    </script>
+}
+   

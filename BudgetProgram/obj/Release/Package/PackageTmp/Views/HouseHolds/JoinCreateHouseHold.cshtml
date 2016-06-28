@@ -1,0 +1,95 @@
+﻿@model BudgetProgram.Models.HouseHolds
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Create Household</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                @using (Html.BeginForm("JoinCreateHouseHold", "HouseHolds", FormMethod.Post))
+            {
+                    @Html.AntiForgeryToken()
+
+                    @*<h4 style="color:#fff">Create Household</h4>*@
+                    <p class="text-danger">@ViewBag.ErrorMessage</p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter New Household Name" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Create Household" class="btn btn-teal" />
+                            </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+
+  
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>Join Household</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                        @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="panel-body">
+
+                    @using (Html.BeginForm("Join", "HouseHolds", FormMethod.Post))
+            {
+                        @Html.AntiForgeryToken()
+                        @*<h4 style="color:#fff">Join Household</h4>*@
+                        <p class="text-danger">@ViewBag.JoinErrorMessage</p>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <input name="InviteCode" type="text" class="form-control" placeholder="Enter the code received via email" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Join Household" class="btn btn-teal" />
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+        @*<div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>*@
+
+        @*@section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }*@

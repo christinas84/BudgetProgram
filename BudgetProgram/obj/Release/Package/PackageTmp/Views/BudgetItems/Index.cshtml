@@ -1,0 +1,105 @@
+﻿
+@model BudgetProgram.Models.HouseHolds
+@using Microsoft.AspNet.Identity;
+
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>Budgets</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    @*<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table id="tableBudg" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Goal</th>
+                            <th>Category</th>
+                            <th>Warn Within</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BudgetItems.Where(b => b.IsSoftDeleted != true))
+                        {
+                            var userId = User.Identity.GetUserId();
+                            var budBal = item.Category.Transactions.Where(t => t.Income != true).Sum(t => t.Amount);
+
+                            <tr>
+                                <td>@item.Name</td>
+                                @if (item.Income == true)
+                                {
+                                    <td><i class="fa fa-plus"></i></td>}
+                                else {
+                                    <td><i class="fa fa-minus"></i></td>}
+                                <td>@budBal</td>
+                                <td>@item.AmountLimit</td>
+                                <td>@item.Category.Name</td>
+                                @if (item.WarningId != null)
+                                {
+                                    <td>$@item.Warning.WarningLimit</td>}
+                                        else {
+                                    <td><small> no warning </small></td>  }
+                                <td>
+                                    <button class="detailBudg btn btn-sm btn-teal" data-id="@item.Id" type="button"><i class="fa fa-eye"></i></button>                                    
+                                    <button class="editBudg btn btn-sm btn-teal" data-id="@item.Id" type="button"><i class="fa fa-edit"></i></button>
+                                    <button class="deleteBudg btn btn-sm btn-danger" data-id="@item.Id" type="button"><i class="fa fa-trash"></i></button>
+
+                                </td>
+
+                                @*}*@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="createView editView deleteView detailsView">@Html.Action("_Create", "BudgetItems")</div>
+
+
+@*<div class="row">
+    <div class="editView">
+    </div>
+</div>*@
+
+@section Scripts {
+    <script type="text/javascript">
+    //$('.editAcct').click(function(){
+    //    $('#editView').load('/Accounts/_Edit/'+$(this).data('id'));
+    //});
+        $('.editBudg').click(function () {
+            $('.createview').hide()
+            $('.editView').load('/BudgetItems/_Edit/' + $(this).data('id'));
+        });
+        $('.deleteBudg').click(function () {
+            $('.createview').hide()
+            $('.deleteView').load('/BudgetItems/_Delete/' + $(this).data('id'));
+        });
+        $('.detailBudg').click(function () {
+            $('.createview').hide()            
+            $('.detailsView').load('/BudgetItems/_Details/' + $(this).data('id'));
+        });
+        //$('.cancel').click(function () {
+        //    $('.detailsView').hide()
+        //    $('.createview').load('/BudgetItems/_Create/' + $(this).data('id'));
+        //});
+    </script>
+}

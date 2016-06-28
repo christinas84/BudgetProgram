@@ -1,0 +1,81 @@
+﻿@*@model IEnumerable<BudgetProgram.Models.Account>*@
+@model BudgetProgram.Models.ManageAccountsViewModel
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title-box">
+                    <h3>All accounts</h3>
+                </div>
+                <ul class="panel-controls" style="margin-top: 2px;">
+                    <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table id="tableAcct" class="data-table table">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Starting Balance</th>
+                            <th>Balance</th>
+                            <th>Reconciled Balance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var account in Model.ReconciledAccounts)
+                        {
+                            var bal = account.Account.StartBal + account.Account.Transactions.Where(t => t.Income == true).Sum(s => s.Amount) - account.Account.Transactions.Where(t => t.Income == false).Sum(s => s.Amount);
+                            <tr>
+                                <td>@account.Account.Name</td>
+                                <td>@account.Account.StartBal</td>
+                                <td class="balance text-succ">@bal</td>
+                                <td class="balance text-succ">@ViewBag.recAcct</td>
+
+                                <td>
+                                    <button class="detailsAcct btn btn-sm btn-teal" data-id="@account.Account.Id" type="button"><i class="fa fa-eye"></i></button>                          
+                                        <button id="edit" class="editAcct btn btn-teal btn-sm" data-id="@account.Account.Id" type="button"><i class="fa fa-edit"></i></button>
+                                        <button id="delete" class="deleteAcct btn btn-danger btn-sm" data-id="@account.Account.Id" type="button"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>    
+    <div class="createView editView deleteView detailsView">@Html.Action("_Create", "Accounts")</div>
+</div>
+
+
+ <div id="viewTrans"></div>
+    
+
+
+@section Scripts {
+<script type="text/javascript">   
+    $('.editAcct').click(function () {
+        $('.createview').hide()
+        $('.editView').load('/Accounts/_Edit/' + $(this).data('id'));
+    });
+    $('.deleteAcct').click(function () {
+        $('.createview').hide()
+        $('.deleteView').load('/Accounts/_Delete/' + $(this).data('id'));
+    });
+    $('.detailsAcct').click(function () {
+        $('.createview').hide()
+        $('.detailsView').load('/Accounts/_Details/' + $(this).data('id'));
+    });
+    </script>
+    }
